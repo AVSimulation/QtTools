@@ -1,10 +1,44 @@
 cmake_minimum_required(VERSION 3.0)
 
+################################### ENV CHECK
+IF(NOT DEFINED ENV{EXTERNALS2_PATH} AND NOT DEFINED ENV{EXTERNALS2_PATH_SYS})
+	message( FATAL_ERROR "$EXTERNALS2_PATH or EXTERNALS2_PATH_SYS are not defined. Aborting" )
+ENDIF()
 
-#### Customize with your own environement
-SET(VCPKG_BASE_PATH $ENV{EXTERNALS2_PATH}/windows/vs2019/VCPKG/)
-####
-set(CMAKE_TOOLCHAIN_FILE "${VCPKG_BASE_PATH}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+### One system only env var (Windows or linux)
+IF(DEFINED ENV{EXTERNALS2_PATH_SYS})
+	SET(EXTERNALS_BASE_PATH "$ENV{EXTERNALS2_PATH_SYS}" CACHE STRING "")
+ELSE()
+	IF(WIN32)
+		SET(PLATFORM "windows/vs2019" CACHE STRING "")
+	ELSE(WIN32)
+		SET(PLATFORM "linux/${LSB_DISTRIBUTOR_ID}/${LSB_RELEASE}" CACHE STRING "")
+	ENDIF()
+
+	SET(EXTERNALS_BASE_PATH "$ENV{EXTERNALS2_PATH}/${PLATFORM}" CACHE STRING "")
+ENDIF()
+
+file(TO_CMAKE_PATH "${EXTERNALS_BASE_PATH}" EXTERNALS_BASE_PATH)
+
+message(STATUS "EXTERNALS2 BASE PATH: ${EXTERNALS_BASE_PATH}")
+
+# Include toolchain from vcpkg
+IF(WIN32)
+	if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+		if(DEFINED ENV{VCPKGAVS_ROOT})
+			set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKGAVS_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+		else()
+			set(CMAKE_TOOLCHAIN_FILE "${EXTERNALS_BASE_PATH}/VCPKG/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+		endif()
+	endif()
+	message(STATUS "Using CMAKE_TOOLCHAIN_FILE: " ${CMAKE_TOOLCHAIN_FILE})
+ENDIF(WIN32)
+
+if(WIN32)
+	STRING(APPEND EXTERNALS_BASE_PATH "/x64" ) #TODO x64/x86
+else(WIN32)
+	set(VCPKG_TARGET_TRIPLET "x64-linux-dynamic" CACHE STRING "VCPKG Target Triplet to use")
+endif(WIN32)
 
 #############################################
 project(QtTools)
