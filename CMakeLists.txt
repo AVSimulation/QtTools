@@ -66,6 +66,9 @@ QTWinMigrate/qwinhost.h
 QTWinMigrate/QWinWidget
 QTWinMigrate/qwinwidget.cpp
 QTWinMigrate/qwinwidget.h
+QTWinMigrate/QMfcApp
+QTWinMigrate/QWinHost
+QTWinMigrate/QWinWidget
 )
 
 set(CMAKE_MFC_FLAG 2)
@@ -92,7 +95,8 @@ install(TARGETS QtTools)
 IF(WIN32)
 install(DIRECTORY "QTWinMigrate/" 
         DESTINATION "include/QtTools/QTWinMigrate"
-        FILES_MATCHING PATTERN "*.h")
+        FILES_MATCHING PATTERN "*.h" PATTERN "QMfcApp" PATTERN "QWinHost" PATTERN "QWinWidget"
+)
 ENDIF(WIN32)
 
 install(DIRECTORY "Browser/" 
