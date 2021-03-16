@@ -52,25 +52,19 @@ class CWinApp;
 #endif
 
 #if defined(Q_OS_WIN)
-#  if !defined(QT_QTWINMIGRATE_EXPORT) && !defined(QT_QTWINMIGRATE_IMPORT)
-#    define QT_QTWINMIGRATE_EXPORT
-#  elif defined(QT_QTWINMIGRATE_IMPORT)
-#    if defined(QT_QTWINMIGRATE_EXPORT)
-#      undef QT_QTWINMIGRATE_EXPORT
-#    endif
-#    define QT_QTWINMIGRATE_EXPORT __declspec(dllimport)
-#  elif defined(QT_QTWINMIGRATE_EXPORT)
-#    undef QT_QTWINMIGRATE_EXPORT
-#    define QT_QTWINMIGRATE_EXPORT __declspec(dllexport)
+#  if !defined(QT_QTWINMIGRATE_EXPORT)
+#    define QT_QTWINMIGRATE_API __declspec(dllimport)
+#  else
+#    define QT_QTWINMIGRATE_API __declspec(dllexport)
 #  endif
 #else
-#  define QT_QTWINMIGRATE_EXPORT
+#  define QT_QTWINMIGRATE_API
 #endif
 
 #if QT_VERSION >= 0x050000
 #include <QtCore/QAbstractNativeEventFilter>
 
-class QT_QTWINMIGRATE_EXPORT QMfcAppEventFilter : public QAbstractNativeEventFilter
+class QT_QTWINMIGRATE_API QMfcAppEventFilter : public QAbstractNativeEventFilter
 {
 public:
     QMfcAppEventFilter();
@@ -78,7 +72,7 @@ public:
 };
 #endif
 
-class QT_QTWINMIGRATE_EXPORT QMfcApp : public QApplication
+class QT_QTWINMIGRATE_API QMfcApp : public QApplication
 {
 public:
     static bool pluginInstance(Qt::HANDLE plugin = 0);

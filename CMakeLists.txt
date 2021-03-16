@@ -54,6 +54,7 @@ Browser/qtvariantproperty.h
 Browser/QtTools.h
 )
 
+IF(WIN32)
 SET(WINMIGRATE_SRC
 QTWinMigrate/QMfcApp
 QTWinMigrate/qmfcapp.cpp
@@ -67,6 +68,10 @@ QTWinMigrate/qwinwidget.cpp
 QTWinMigrate/qwinwidget.h
 )
 
+set(CMAKE_MFC_FLAG 2)
+
+ENDIF(WIN32)
+
 add_library(QtTools SHARED
 ${BROWSER_SRC}
 ${WINMIGRATE_SRC}
@@ -79,13 +84,16 @@ Qt5::Widgets
 )
 
 IF(WIN32)
-    target_compile_definitions(QtTools PRIVATE QTTOOLS_EXPORTS QT_QTWINMIGRATE_EXPORT _CRT_SECURE_NO_WARNINGS)
+    target_compile_definitions(QtTools PRIVATE QT_DLL QTTOOLS_EXPORTS QT_QTWINMIGRATE_EXPORT _CRT_SECURE_NO_WARNINGS _AFXDLL)
 ENDIF(WIN32)
 
 install(TARGETS QtTools)
+
+IF(WIN32)
 install(DIRECTORY "QTWinMigrate/" 
         DESTINATION "include/QtTools/QTWinMigrate"
         FILES_MATCHING PATTERN "*.h")
+ENDIF(WIN32)
 
 install(DIRECTORY "Browser/" 
         DESTINATION "include/QtTools/Browser"
