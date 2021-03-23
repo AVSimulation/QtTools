@@ -64,8 +64,9 @@
 #include <QWindow>
 #if (QT_VERSION == QT_VERSION_CHECK(5, 12, 5))
 #include <QtGui/5.12.5/QtGui/qpa/qplatformnativeinterface.h>
-#else
-#include <QtGui/5.9.7/QtGui/qpa/qplatformnativeinterface.h>
+#endif
+#if (QT_VERSION == QT_VERSION_CHECK(5, 15, 2))
+#include <QtGui/5.15.2/QtGui/qpa/qplatformnativeinterface.h>
 #endif
 #define QT_WA(unicode, ansi) unicode
 #endif
