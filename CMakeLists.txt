@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
+IF(WIN32)
 ################################### ENV CHECK
 IF(NOT DEFINED ENV{EXTERNALS2_PATH} AND NOT DEFINED ENV{EXTERNALS2_PATH_SYS})
 	message( FATAL_ERROR "$EXTERNALS2_PATH or EXTERNALS2_PATH_SYS are not defined. Aborting" )
@@ -39,6 +40,8 @@ if(WIN32)
 else(WIN32)
 	set(VCPKG_TARGET_TRIPLET "x64-linux-dynamic" CACHE STRING "VCPKG Target Triplet to use")
 endif(WIN32)
+
+ENDIF(WIN32)
 
 #############################################
 project(QtTools)
