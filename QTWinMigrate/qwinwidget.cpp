@@ -63,7 +63,7 @@
 #if QT_VERSION >= 0x050000
 #include <QWindow>
 #if (QT_VERSION == QT_VERSION_CHECK(5, 15, 11))
-#include <QtGui/5.15.7/QtGui/qpa/qplatformnativeinterface.h>
+#include <QtGui/5.15.11/QtGui/qpa/qplatformnativeinterface.h>
 #endif
 #if (QT_VERSION == QT_VERSION_CHECK(5, 15, 7))
 #include <QtGui/5.15.7/QtGui/qpa/qplatformnativeinterface.h>
